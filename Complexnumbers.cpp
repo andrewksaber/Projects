@@ -1,146 +1,107 @@
 #include <iostream>
 #include<cmath>
-
 using namespace std;
-class Complex{
+class comp {
 private:
-    double re ,im ;
-public:
-    Complex( double a = 0.0 ,double b=0.0){re = a ; im = b ;    }
-    friend istream& operator >> (istream& ,Complex &);
+    float real , imaginary ;
+    char op ,ch ;
+public :
+    comp(float re= 0 , float im = 0 ){ real =re ; imaginary =im ; }
+    void putdata(){
+    cout<<"\n enter the complex number in this form(x+iy) and if y is negative please type(x+-yi)";
 
-   friend ostream& operator<<(ostream &,Complex&);
-
-    Complex operator +(const Complex cc2)const{
-
-        double x = re +cc2.re ;
-        double y= im +cc2.im ;
-        return Complex(x,y);
-    }
-    Complex operator-(const Complex cc2)const {
-
-        double x = re -cc2.re ;
-        double y= im -cc2.im ;
-        return Complex(x,y);
-    }
-    Complex operator *(const Complex cc2)const {
-
-    double x  = (re *cc2.re +im *cc2.im *(-1));
-  double y= re *cc2.im +cc2.re *im;
-    return Complex(x,y) ;
-    }
-
-    Complex  operator /(Complex cc2)const {
-
-        double k = ((cc2.re *cc2.re) +(cc2.im *(cc2.im*(-1))*(-1)));
-       double x =( re *cc2.re +  im * ( -1 *cc2.im)*(-1))/k;
-       double y = ((re *(-1)*cc2.im )+(im *cc2.re)) /k  ;
-       return Complex(x,y);
-    }
-bool operator> ( Complex cc2 ){
-
-
-return (mag() >  cc2.mag());
-}
-bool operator<( Complex cc2 ){
-return (mag() < cc2.mag());
-}
-bool operator <=( Complex cc2){
-return (mag() <= cc2.mag());
-}
-bool operator >=( Complex cc2){
-return (mag() >= cc2.mag());
-
-}
-bool operator ==( Complex cc2){
-return (mag() == cc2.mag());
-}
-double mag(){
-        Complex cc1;
-    double mag1 ;
-      cc1.re=re*re;
-        cc1.im=im*im;
-        mag1  =cc1.re +cc1.im ;
-        mag1 = sqrt(mag1);
-        return mag1 ;
+    cin>>real>>op>>imaginary>>ch ;
 
     }
-void operator = (Complex cc2){
-    re = cc2.re ;
-    im = cc2.im ;
-}
-Complex operator +=(Complex cc2){
-
-re = re + cc2.re ;
-im += cc2.im ;
-return Complex(re,im);
-
-}
-Complex operator -=(Complex cc2){
-
-re = re -cc2.re ;
-im = im -cc2.im ;
-return Complex(re,im);
-
-}
-Complex operator *= (Complex cc2 ){
- double x = (re *cc2.re +im *cc2.im *(-1));
-  im = re *cc2.im +cc2.re *im;
-  re = x ;
-    return Complex(re,im);
-}
-Complex operator /= (Complex cc2){
+    float mag(){
+        return sqrt((real*real)+(imaginary*imaginary));
 
 
-        double k = ((cc2.re *cc2.re) +(cc2.im *(cc2.im*(-1))*(-1)));
-       double x =( re *cc2.re +  im * ( -1 *cc2.im)*(-1))/k;
-       im= ((re *(-1)*cc2.im )+(im *cc2.re)) /k  ;
-       re = x ;
-       return Complex(re,im);
+    }
+    comp add(comp cc1,comp cc2){
+        real = cc1.real +cc2.real ; imaginary = cc1.imaginary + cc2.imaginary ;
 
-}
+    return comp(real,imaginary);
+
+
+
+    }
+    comp subtract (comp cc1,comp cc2){
+      real = cc1.real -cc2.real ; imaginary = cc1.imaginary - cc2.imaginary ;
+
+      return comp(real,imaginary) ;
+      }
+
+      comp multiply(comp cc1 , comp cc2){
+      real =( cc1.real *cc2.real )+( cc1.imaginary *cc2.imaginary*(-1 )) ;imaginary = (cc1.real *cc2.imaginary +cc2.real *cc1.imaginary ) ;
+      return comp(real , imaginary ) ;
+
+
+
+      }
+
+      comp division (comp cc1 ,comp cc2){
+        if((cc1.mag() ==0) && (cc2.mag() == 0)  ){
+            cout<<"\n invalid operation "  ;
+            return 0 ;
+
+        }
+        else {
+             real = ((cc1.real*cc2.real)-(cc1.imaginary*cc2.imaginary*(-1)))/((cc2.real *cc2.real)-(cc2.imaginary*cc2.imaginary*(-1))) ;
+    imaginary = ((cc1.real*cc2.imaginary *(-1))+(cc1.imaginary *cc2.real ))/((cc2.real*cc2.real )-(cc2.imaginary *cc2.imaginary *(-1))) ;
+
+        return comp(real,imaginary) ;
+        }
+
+
+      }
+
+    void showdata(){
+    cout<<real<<"+"<<imaginary<<"i";
+
+    }
+    void operations(comp cc1 ,comp cc2  ){
+    char oper ;
+    cout<<"enter the operator " ;
+    cin>>oper ;
+    switch(oper){
+    case '+' : add(cc1,cc2) ; break;
+    case '-' :subtract(cc1,cc2) ;break;
+    case '*' :multiply(cc1,cc2) ;break;
+    case '/' : division(cc1,cc2) ; break  ;
+    default: cout<<"\n wrong input ";break ;
+
+    }
+
+
+
+
+    }
+
+
+
+
+
 };
- istream& operator >> (istream & sin ,Complex &cc2 ){
-        char ch ,op ;
-    cout<<"enter the complex number \n" ;
-    sin>>cc2.re>>op>>cc2.im>>ch ;
-    return sin ;
 
-    }
-   ostream& operator<<(ostream & sout,Complex&   cc2){
-  sout<<"("<<cc2.re<<","<<cc2.im<<")"<<endl;
-   return sout ;
-    }
-int main()
-{
-Complex c1 ,c2 ,c3;
-char ch ,ch2; 
+
+
+
+
+int main(){
+char ch ;
+comp c1,c2,c3 ;
+
 do{
-cout<<"enter operation " ; 
-cin>>c1|>>ch>>c2 ; 
-switch(ch) {
-case :'+' :c3 =c1+c2 ; cout<<endl<<c3 ;break;
-case :'-' :c3 =c1 -c2 ; cout<<endl<<c3 ;break;
-case :'*' :c3 =c1*c2 ; cout<<endl<<c3 ;break;
-case :'/' :c3 =c1/c2 ; cout<<endl<<c3 ;break;
-case : '>': cout<<(c1>c2)?"True":"false" ;break;
-case : '<': cout<<(c1<c2)?"True":"false" ;break;
-
-}
-
-cout<<"\n another(y/n)? "
-cin>>ch2 ;
-}while(ch2 != 'n') ; 
-
-
-
-
-}
-
-
-
-
-
+cout<<"\n NOTE : all complex numbers are initialized with 0 by default \n ";
+c1.putdata();
+c2.putdata();
+c3.operations(c1,c2);
+c3.showdata();
+cout<<"\n another operation ?(y/n)" ;
+cin>>ch ;
+}while(ch != 'n') ;
 
     return 0;
+
 }
